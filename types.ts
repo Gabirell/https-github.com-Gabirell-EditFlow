@@ -1,8 +1,11 @@
 export enum Software {
   PREMIERE = 'Adobe Premiere Pro',
+  AFTER_EFFECTS = 'Adobe After Effects',
   FINAL_CUT = 'Final Cut Pro',
   DAVINCI = 'DaVinci Resolve',
-  BLENDER = 'Blender 3D'
+  BLENDER = 'Blender 3D',
+  CAPCUT = 'CapCut',
+  NUKE = 'Foundry Nuke'
 }
 
 export enum OS {
@@ -34,6 +37,6 @@ export interface SearchState {
 export interface AppConfig {
   software: Software;
   os: OS;
-  softwareLanguage: Language; // The language the software is installed in
-  uiLanguage: Language; // The language the user wants to interact with the app in
+  softwareLanguage: Language; 
+  uiLanguage: Language; 
 }

@@ -1,20 +1,52 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# EditFlow AI - Pro Video Shortcuts 🎬⚡
 
-# Run and deploy your AI Studio app
+**EditFlow AI** is a professional-grade, multilingual shortcut engine built for editors who want to stay in the zone. Stop digging through menus—just ask naturally how to perform a task, and get the exact keyboard shortcuts instantly.
 
-This contains everything you need to run your app locally.
+## ✨ Features
 
-View your app in AI Studio: https://ai.studio/apps/drive/1B3nGR4NG0y6UdXnL4MkMxs_3Bw56Rcza
+- **Natural Language Discovery**: Ask "how do I color grade?" or "ripple trim shortcut" and get precise results.
+- **Brand Intelligence**: Deep knowledge of Premiere Pro, After Effects, Final Cut, DaVinci Resolve, Blender, CapCut, and Nuke.
+- **OS Fluidity**: Automatically toggles between `Cmd` (macOS) and `Ctrl` (Windows/Linux) logic.
+- **Multilingual Support**: Interactive in English, Spanish, and Brazilian Portuguese.
+- **Premium UI**: Dark-mode optimized, fast-loading, and responsive design.
 
-## Run Locally
+## 🛠️ Tech Stack
 
-**Prerequisites:**  Node.js
+- **React 19 + TypeScript**: Modern, type-safe frontend architecture.
+- **Tailwind CSS**: High-performance, utility-first styling.
+- **Google Gemini 3 Flash**: Leveraging state-of-the-art LLM reasoning for accurate technical knowledge.
 
+## 🔒 Security & Public Deployment
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+This application is designed to be hosted publicly. We have implemented several layers of protection:
+
+- **Prompt Injection Defense**: All user inputs pass through a multi-stage sanitizer that filters out "jailbreak" attempts and system command overrides.
+- **Environment Isolation**: API keys are managed exclusively via secure environment variables (`process.env.API_KEY`).
+- **Error Obfuscation**: Real-time production errors are masked to prevent infrastructure leaking.
+- **CORS & Rate Limiting (Recommended)**: For production use, it is recommended to host this behind a proxy (like Vercel or Netlify) to manage usage quotas.
+
+## 📦 Getting Started
+
+1. **Clone & Install**:
+   ```bash
+   git clone https://github.com/your-username/editflow-ai.git
+   cd editflow-ai
+   npm install
+   ```
+2. **Configure API**:
+   Create a `.env` file in the root:
+   ```env
+   API_KEY=your_gemini_api_key
+   ```
+3. **Run Dev**:
+   ```bash
+   npm run dev
+   ```
+
+## 🔗 Author
+
+Developed by **Gabriel Netto**. 
+Portfolio: [gabrielnetto.com](https://gabrielnetto.com)
+
+---
+*Powered by Google Gemini AI. Version 2.0.1*

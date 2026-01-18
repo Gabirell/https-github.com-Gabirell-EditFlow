@@ -3,26 +3,29 @@ import { Software, OS, Language, SearchState, AppConfig } from './types';
 import { TRANSLATIONS, SOFTWARE_ICONS, SOFTWARE_COLORS, SOFTWARE_THEMES } from './constants';
 import { searchShortcuts } from './services/geminiService';
 import ShortcutCard from './components/ShortcutCard';
+import Logo from './components/Logo';
 
-// Improved label logic for buttons
 const getSoftwareLabel = (sw: Software): string => {
   switch (sw) {
     case Software.PREMIERE: return 'Premiere';
+    case Software.AFTER_EFFECTS: return 'After Effects';
     case Software.FINAL_CUT: return 'Final Cut';
     case Software.DAVINCI: return 'DaVinci';
     case Software.BLENDER: return 'Blender';
+    case Software.CAPCUT: return 'CapCut';
+    case Software.NUKE: return 'Nuke';
     default: return sw;
   }
 };
 
-const SoftwareIcon: React.FC<{ sw: Software, className?: string, isSmall?: boolean }> = ({ sw, className = "w-10 h-10", isSmall = false }) => {
+const SoftwareIcon: React.FC<{ sw: Software, className?: string }> = ({ sw, className = "w-10 h-10" }) => {
   const [imgError, setImgError] = useState(false);
   const theme = SOFTWARE_THEMES[sw];
 
   if (imgError) {
     return (
       <div className={`${className} ${theme.bg} rounded-xl border border-white/10 flex items-center justify-center shadow-lg transform transition-transform group-hover:scale-105`}>
-        <span className={`${theme.text} ${isSmall ? 'text-sm' : 'text-lg'} font-black italic tracking-tighter`}>
+        <span className={`${theme.text} text-lg font-black italic tracking-tighter`}>
           {theme.initials}
         </span>
       </div>
@@ -45,7 +48,7 @@ const SoftwareButton: React.FC<{
   isSelected: boolean;
   onClick: () => void;
 }> = ({ sw, isSelected, onClick }) => {
-  const themeClasses = SOFTWARE_COLORS[sw].split(' ');
+  const themeClasses = (SOFTWARE_COLORS[sw] || "border-slate-800 bg-slate-900").split(' ');
   const borderColor = themeClasses[0];
   const bgColor = themeClasses[1];
 
@@ -53,26 +56,26 @@ const SoftwareButton: React.FC<{
     <button
       onClick={onClick}
       className={`
-        relative flex flex-col items-center justify-center p-4 rounded-2xl transition-all duration-300
+        relative flex flex-col items-center justify-center p-3 sm:p-4 rounded-2xl transition-all duration-300
         border-2 group overflow-hidden
         ${isSelected 
           ? `${borderColor} ${bgColor} shadow-lg scale-105 z-10` 
           : 'border-slate-800 bg-slate-900/40 hover:border-slate-600 hover:bg-slate-800'}
       `}
     >
-      <div className="mb-3 relative">
-        <SoftwareIcon sw={sw} />
+      <div className="mb-2 relative">
+        <SoftwareIcon sw={sw} className="w-8 h-8 sm:w-10 sm:h-10" />
         {isSelected && (
            <div className="absolute -inset-2 bg-white/5 rounded-full blur-xl animate-pulse-slow"></div>
         )}
       </div>
       
-      <span className={`text-[10px] md:text-xs font-black tracking-[0.1em] text-center uppercase ${isSelected ? 'text-white' : 'text-slate-500 group-hover:text-slate-300'}`}>
+      <span className={`text-[9px] sm:text-[10px] md:text-xs font-black tracking-[0.05em] text-center uppercase leading-tight ${isSelected ? 'text-white' : 'text-slate-500 group-hover:text-slate-300'}`}>
         {getSoftwareLabel(sw)}
       </span>
       
       {isSelected && (
-        <div className={`absolute -bottom-1 left-1/2 -translate-x-1/2 w-12 h-1 rounded-full ${borderColor.replace('border-', 'bg-')} blur-[2px]`}></div>
+        <div className={`absolute -bottom-1 left-1/2 -translate-x-1/2 w-10 h-1 rounded-full ${borderColor.replace('border-', 'bg-')} blur-[2px]`}></div>
       )}
     </button>
   );
@@ -116,20 +119,12 @@ const App: React.FC = () => {
     if (e.key === 'Enter') handleSearch();
   };
 
-  const handleSoftwareChange = (sw: Software) => {
-    setConfig(prev => ({ ...prev, software: sw }));
-  };
-
   return (
     <div className="min-h-screen bg-[#020617] text-slate-200 font-sans selection:bg-indigo-500/40">
       <header className="sticky top-0 z-50 bg-[#020617]/80 backdrop-blur-xl border-b border-slate-800/50">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="m16 18 6-6-6-6"/><path d="m8 6-6 6 6 6"/>
-              </svg>
-            </div>
+            <Logo className="w-9 h-9" />
             <div className="hidden sm:block">
               <h1 className="text-xl font-black tracking-tighter text-white uppercase italic">
                 {t.title}
@@ -153,19 +148,15 @@ const App: React.FC = () => {
 
       <main className="max-w-4xl mx-auto px-6 py-12">
         <section className="mb-12">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xs uppercase tracking-[0.2em] text-slate-500 font-black">
-                  {t.settings}
-              </h2>
-            </div>
+            <h2 className="text-xs uppercase tracking-[0.2em] text-slate-500 font-black mb-6">{t.settings}</h2>
             
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+            <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-3 mb-8">
                 {Object.values(Software).map(sw => (
                   <SoftwareButton 
                     key={sw}
                     sw={sw}
                     isSelected={config.software === sw}
-                    onClick={() => handleSoftwareChange(sw)}
+                    onClick={() => setConfig(prev => ({ ...prev, software: sw }))}
                   />
                 ))}
             </div>
